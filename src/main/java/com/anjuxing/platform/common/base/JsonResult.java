@@ -29,7 +29,6 @@ public class JsonResult<T> implements Serializable{
     public static final String PARAMETERS_ERROR_CODE = "000000";
     public static final String PARAMETERS_ERROR_MESSAGE = "传入参数错误";
 
-    private String status; //状态0未登录，1正常，2未授权
     private String result; //返回结果状态0失败，1成功
     private Object data; //接口返回数据
     private String code; //操作结果返回编码
@@ -40,7 +39,6 @@ public class JsonResult<T> implements Serializable{
     }
 
     public JsonResult(boolean result){
-        this.status = NORMAL;
         if (result){
             this.result = SUCCESS;
             this.code = SUCCESS_CODE;
@@ -53,7 +51,6 @@ public class JsonResult<T> implements Serializable{
     }
 
     public JsonResult(boolean result, T model){
-        this.status = NORMAL;
         if (result){
             this.result = SUCCESS;
             this.data = model;
@@ -67,7 +64,6 @@ public class JsonResult<T> implements Serializable{
     }
 
     public JsonResult(T model){
-        this.status = NORMAL;
         if (model != null){
             this.result = SUCCESS;
             this.data = model;
@@ -81,7 +77,6 @@ public class JsonResult<T> implements Serializable{
     }
 
     public JsonResult(List<T> list){
-        this.status = NORMAL;
         if (list != null && list.size() > 0){
             this.result = SUCCESS;
             this.data = list;
@@ -95,7 +90,6 @@ public class JsonResult<T> implements Serializable{
     }
 
     public JsonResult(PageInfo<T> pageInfo){
-        this.status = NORMAL;
         if (pageInfo != null && pageInfo.getList() != null && pageInfo.getList().size() > 0){
             this.result = SUCCESS;
             this.data = pageInfo;
@@ -106,14 +100,6 @@ public class JsonResult<T> implements Serializable{
             this.code = DATA_NOT_FOUND_CODE;
             this.message = DATA_NOT_FOUND_MESSAGE;
         }
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getResult() {

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.anjuxing.platform.common.base.BaseController;
 import com.anjuxing.platform.common.base.JsonResult;
-import com.anjuxing.platform.common.base.User;
 import com.anjuxing.platform.common.base.ValidateData;
 import com.anjuxing.platform.common.exception.ControllerException;
 import com.anjuxing.platform.common.util.ValidateUtils;
@@ -110,8 +109,7 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 	@PostMapping
 	public JsonResult add(@RequestBody T model) throws ControllerException {
 		JsonResult jsonResult = getJsonResult();
-		User user = getUser();
-		model.preInsert(user);
+		model.preInsert();
 		ValidateData valid = model.validate();
 		if (valid.isStatus()) {
 			boolean result = service.save(model);
@@ -135,8 +133,7 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 		JsonResult jsonResult = getJsonResult();
 		if (ValidateUtils.isNotEmpty(id) && ValidateUtils.isNotEmpty(model)) {
 			model.setId(id);
-			User user = getUser();
-			model.preUpdate(user);
+			model.preUpdate();
 			boolean result = service.update(model);
 			jsonResult = new JsonResult(result, model);
 		}else {
@@ -155,10 +152,9 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 	@PutMapping(value="/cancel/{id}")
 	public JsonResult cancel(@PathVariable String id) throws ControllerException {
 		JsonResult jsonResult = getJsonResult();
-		User user = getUser();
 		T model = service.queryById(id);
 		if (model != null) {
-			model.preCancel(user);
+			model.preCancel();
 			boolean result = service.cancel(model);
 			jsonResult = new JsonResult(result, model);
 		} else {
@@ -190,12 +186,11 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 	@PostMapping(value="/batch")
 	public JsonResult add(@RequestBody List<T> list) throws ControllerException {
 		JsonResult jsonResult = getJsonResult();
-		User user = getUser();
 		if (list != null && list.size() > 0) {
 			boolean addStatus = false;
 			List<T> saveList = new ArrayList<T>();
 			for(T model : list) {
-				model.preInsert(user);
+				model.preInsert();
 				ValidateData valid = model.validate();
 				if (valid.isStatus()){
 					saveList.add(model);
@@ -228,13 +223,12 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 	@PutMapping(value="/batch")
 	public JsonResult update(@RequestBody List<T> list) throws ControllerException {
 		JsonResult jsonResult = getJsonResult();
-		User user = getUser();
 		if (list != null && list.size() > 0) {
 			boolean updateStatus = false;
 			List<T> updateList = new ArrayList<T>();
 			for(T model : list) {
 				if (model != null && ValidateUtils.isNotEmpty(model.getId())) {
-					model.preUpdate(user);
+					model.preUpdate();
 					updateList.add(model);
 					updateStatus = service.update(model);
 					if (!updateStatus){
@@ -268,16 +262,12 @@ public class CrudController<S extends CrudService<T>, T extends CrudModel<T>> ex
 		JsonResult jsonResult = getJsonResult();
 		if (ids != null && ids.size() > 0) {
 			List<T> list = service.queryByIds(ids);
-			//List<T> cancelList = new ArrayList<T>();
-			User user = getUser();
 			if (list != null && list.size() > 0) {
 				boolean result = false;
 				for (T model : list) {
-					model.preCancel(user);
-					//cancelList.add(model);
+					model.preCancel();
 					result = service.cancel(model);
 				}
-				//boolean result = service.cancel(cancelList);
 				if (result) {
 					jsonResult.setResult(SUCCESS);
 					jsonResult.setMessage(SUCCESS_MESSAGE);

@@ -1,7 +1,6 @@
 package com.anjuxing.platform.common.crud;
 
 import com.anjuxing.platform.common.base.BaseModel;
-import com.anjuxing.platform.common.base.User;
 import com.anjuxing.platform.common.base.ValidateData;
 import com.anjuxing.platform.common.util.ValidateUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,7 +69,7 @@ public abstract class CrudModel<T> extends BaseModel<T> {
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	
+
 	/**
 	 * 数据校验，插入数据之前执行，子类实现
 	 * @return
@@ -78,19 +77,16 @@ public abstract class CrudModel<T> extends BaseModel<T> {
 	public abstract ValidateData validate();
 	/**
 	 * 插入数据之前执行方法，子类实现
-	 * @param user
 	 */
-	public abstract void preInsert(User user);
+	public abstract void preInsert();
 	/**
 	 * 更新数据之前执行方法，子类实现
-	 * @param user
 	 */
-	public abstract void preUpdate(User user);
+	public abstract void preUpdate();
 	/**
 	 * 逻辑删除数据之前执行方法，子类实现
-	 * @param user
 	 */
-	public abstract void preCancel(User user);
+	public abstract void preCancel();
 	
 	
 	public abstract String toString();

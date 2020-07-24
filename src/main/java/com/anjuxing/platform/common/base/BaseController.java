@@ -7,11 +7,9 @@ public class BaseController {
 	
 
     private JsonResult jsonResult;
-    private User user;
 
     public JsonResult getJsonResult() {
         this.jsonResult = new JsonResult();
-        this.jsonResult.setStatus(NORMAL);
         this.jsonResult.setResult(FAILURE);
         this.jsonResult.setCode(SUCCESS_CODE);
         this.jsonResult.setMessage(SUCCESS_MESSAGE);
@@ -20,17 +18,6 @@ public class BaseController {
 
     public void setJsonResult(JsonResult jsonResult) {
         this.jsonResult = jsonResult;
-    }
-
-    public User getUser() {
-        this.user = new User();
-        this.user.setId("10000001");
-        this.user.setDepart("1000002");
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public static final String FAILURE = "0"; //失败
